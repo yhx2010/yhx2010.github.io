@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>妈妈，母亲节快乐 💐</title>
+    <style>
+        :root {
+            --rose: #e8c4c4;
+            --rose-deep: #c97d7d;
+            --cream: #fdf6f0;
+            --brown: #5d4037;
+            --soft-brown: #8d6e63;
+            --shadow-soft: 0 4px 20px rgba(120, 80, 60, 0.12);
+            --shadow-medium: 0 8px 32px rgba(100, 60, 40, 0.18);
+            --font-serif: 'Georgia', 'Noto Serif SC', 'STSong', serif;
+            --font-script: 'Georgia', 'KaiTi', '楷体', serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-serif);
+            background: #fdf6f0;
+            color: #4a3228;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            touch-action: pan-y;
+        }
+
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1000;
+            background: radial-gradient(ellipse at center, #fef6f0 0%, #f5e6d8 40%, #e8d5c8 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        #intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #d4a574;
+            border-radius: 50%;
+            animation: sparkleFloat 4s infinite ease-in-out;
+            opacity: 0;
+        }
+        @keyframes sparkleFloat {
+            0%,
+            100% {
+                opacity: 0;
+                transform: translateY(0) scale(1);
+            }
+            15% {
+                opacity: 0.9;
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(-60px) scale(1.8);
+            }
+            85% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-110px) scale(0.3);
+            }
+        }
+        .envelope-wrapper {
+            position: relative;
+            z-index: 2;
+            animation: envelopeFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 28px rgba(130, 80, 60, 0.25));
+        }
+        @keyframes envelopeFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-14px);
+            }
+        }
+        .envelope {
+            width: 160px;
+            height: 110px;
+            border-radius: 8px;
+            position: relative;
+            background: linear-gradient(145deg, #f9e4d4 0%, #f2d4c0 40%, #e8c8b0 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 24px rgba(100, 60, 30, 0.25);
+        }
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            z-index: 3;
+            background: linear-gradient(170deg, #f5dcc8 0%, #ecc8a8 50%, #e0b890 100%);
+            border-radius: 8px 8px 0 0;
+            clip-path: polygon(0 0, 50% 75%, 100% 0);
+            transform-origin: top center;
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .envelope-flap.open {
+            transform: rotateX(180deg);
+        }
+        .envelope-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            z-index: 1;
+            background: linear-gradient(180deg, #f7e0ce 0%, #f0d2ba 100%);
+            border-radius: 0 0 8px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .envelope-seal {
+            width: 36px;
+            height: 36px;
+            background: #d4867c;
+            border-radius: 50%;
+            position: absolute;
+            top: 48px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .envelope-seal.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.4);
+        }
+        .intro-hint {
+            margin-top: 28px;
+            z-index: 2;
+            font-size: 1.05rem;
+            color: #8d6e63;
+            letter-spacing: 0.06em;
+            animation: hintPulse 2s infinite;
+            font-family: var(--font-script);
+        }
+        @keyframes hintPulse {
+            0%,
+            100% {
+                opacity: 0.55;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .intro-title-main {
+            z-index: 2;
+            font-size: 1.6rem;
+            color: #5d4037;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+            font-family: var(--font-script);
+            font-weight: bold;
+        }
+
+        .petal {
+            position: fixed;
+            z-index: 1001;
+            pointer-events: none;
+            font-size: 22px;
+            animation: petalFall linear forwards;
+            opacity: 0;
+        }
+        @keyframes petalFall {
+            0% {
+                opacity: 0;
+                transform: translate(0, -40px) rotate(0deg) scale(0.5);
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--drift), 105vh) rotate(var(--spin)) scale(1.3);
+            }
+        }
+
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(180, 140, 120, 0.4);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(120, 80, 60, 0.12);
+            transition: all 0.3s;
+            backdrop-filter: blur(6px);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+        }
+        .music-btn.playing {
+            border-color: #c97d7d;
+            background: rgba(253, 240, 235, 0.9);
+        }
+
+        .swiper-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .swiper-wrapper {
+            display: flex;
+            width: 300vw;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+        .swiper-slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+            position: relative;
+        }
+
+        .page-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 998;
+            display: flex;
+            gap: 12px;
+        }
+        .page-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(180, 140, 120, 0.4);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .page-dot.active {
+            background: #c97d7d;
+            transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(201, 125, 125, 0.5);
+        }
+
+        .swipe-hint {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: rgba(180, 140, 120, 0.5);
+            animation: swipeHint 2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .swipe-hint.last {
+            display: none;
+        }
+        @keyframes swipeHint {
+            0%,
+            100% {
+                transform: translateY(-50%) translateX(0);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-50%) translateX(10px);
+                opacity: 0.8;
+            }
+        }
+
+        .slide-film {
+            background: radial-gradient(circle at 30% 30%, rgba(232, 196, 196, 0.15) 0%, transparent 55%),
+                radial-gradient(circle at 70% 70%, rgba(212, 167, 116, 0.18) 0%, transparent 55%);
+            background-color: #fdf6f0;
+            gap: 30px;
+        }
+        .film-title {
+            font-size: 1.5rem;
+            color: #5d4037;
+            letter-spacing: 0.06em;
+            font-family: var(--font-script);
+            text-align: center;
+        }
+        .film-stage {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            min-height: 400px;
+            overflow: visible;
+        }
+        .film-hint {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #8d6e63;
+            opacity: 0.8;
+            letter-spacing: 0.04em;
+        }
+        .replay-btn {
+            padding: 10px 28px;
+            font-size: 1rem;
+            color: #fff;
+            background: #c97d7d;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: var(--font-script);
+            letter-spacing: 0.06em;
+            box-shadow: 0 4px 20px rgba(120, 80, 60, 0.12);
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        .replay-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .replay-btn:hover {
+            background: #b86868;
+            transform: translateY(-2px);
+        }
+
+        .film-strip {
+            position: absolute;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            height: 180px;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+            background: #2c2c2c;
+            border-radius: 3px;
+            padding: 10px 0;
+            opacity: 0;
+        }
+        .film-strip.active {
+            pointer-events: auto;
+            opacity: 1;
+        }
+        .film-strip.strip-0 {
+            z-index: 1;
+        }
+        .film-strip.strip-1 {
+            z-index: 3;
+        }
+        .film-strip.strip-2 {
+            z-index: 5;
+        }
+
+        .film-strip::before,
+        .film-strip::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .film-strip::before {
+            top: -10px;
+            background: repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 5px, #1a1a1a 5px, #1a1a1a 7px,
+                    transparent 7px, transparent 12px);
+            border-radius: 3px 3px 0 0;
+        }
+        .film-strip::after {
+            bottom: -10px;
+            background: repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 5px, #1a1a1a 5px, #1a1a1a 7px,
+                    transparent 7px, transparent 12px);
+            border-radius: 0 0 3px 3px;
+        }
+        .film-strip.scrolling-teeth::before,
+        .film-strip.scrolling-teeth::after {
+            animation: teethScroll 0.3s linear infinite;
+        }
+        @keyframes teethScroll {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -12px 0;
+            }
+        }
+
+        .trail-label {
+            position: absolute;
+            top: -24px;
+            left: 0;
+            font-size: 0.65rem;
+            color: #c9a87c;
+            font-family: var(--font-script);
+            letter-spacing: 0.06em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            white-space: nowrap;
+        }
+        .film-strip.active .trail-label {
+            opacity: 0.8;
+        }
+
+        .film-frame {
+            position: absolute;
+            width: 150px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            -webkit-tap-highlight-color: transparent;
+            transform-origin: center center;
+            top: 0;
+            height: 100%;
+        }
+        .film-frame.present {
+            opacity: 1;
+        }
+        .film-frame.revealed {
+            cursor: default;
+            pointer-events: none;
+        }
+        .film-frame.present:not(.revealed) {
+            animation: frameGlow 2s ease-in-out infinite;
+        }
+        @keyframes frameGlow {
+            0%,
+            100% {
+                filter: brightness(1) drop-shadow(0 0 4px rgba(220, 180, 120, 0.3));
+            }
+            50% {
+                filter: brightness(1.15) drop-shadow(0 0 14px rgba(220, 180, 120, 0.6));
+            }
+        }
+
+        .frame-outer {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .film-frame:not(:last-child) .frame-outer::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 5%;
+            width: 1px;
+            height: 90%;
+            background: rgba(255, 255, 255, 0.08);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .frame-inner {
+            background: #1a1a1a;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .frame-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            display: block;
+            background: #3a3030;
+            flex-shrink: 0;
+        }
+        .frame-placeholder {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2a2222;
+            color: #c9a87c;
+            font-size: 2rem;
+            font-family: var(--font-serif);
+            flex-shrink: 0;
+        }
+        .frame-caption {
+            padding: 6px 8px;
+            font-size: 0.7rem;
+            color: #e0d5c8;
+            text-align: center;
+            font-family: var(--font-script);
+            letter-spacing: 0.04em;
+            background: #222;
+            line-height: 1.3;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .click-dot {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: #ffd700;
+            font-family: var(--font-script);
+            animation: hintPulse 1.5s infinite;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 10;
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+        }
+        .film-frame.revealed .click-dot {
+            display: none;
+        }
+
+        .slide-wordcloud {
+            background: radial-gradient(circle at 50% 50%, rgba(232, 196, 196, 0.2) 0%, transparent 60%);
+            background-color: #fefaf5;
+            gap: 24px;
+        }
+        .wordcloud-title {
+            font-size: 1.5rem;
+            color: #5d4037;
+            letter-spacing: 0.06em;
+            font-family: var(--font-script);
+            text-align: center;
+        }
+        .wordcloud-frame {
+            display: inline-block;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(120, 80, 60, 0.15);
+            border: 1px solid rgba(200, 160, 140, 0.3);
+            max-width: 90vw;
+        }
+        .wordcloud-frame img {
+            max-width: 100%;
+            max-height: 50vh;
+            border-radius: 12px;
+            display: block;
+            background: linear-gradient(135deg, #fef5f0 0%, #fce8dd 30%, #fef0e8 60%);
+            min-width: 260px;
+            min-height: 180px;
+            object-fit: contain;
+        }
+        .wordcloud-subtitle {
+            font-size: 0.9rem;
+            color: #8d6e63;
+            letter-spacing: 0.04em;
+            font-family: var(--font-script);
+            text-align: center;
+        }
+
+        .slide-card {
+            background: radial-gradient(circle at 40% 60%, rgba(232, 196, 196, 0.15) 0%, transparent 55%);
+            background-color: #fdf6f0;
+            gap: 20px;
+        }
+        .card-section-title {
+            font-size: 1.3rem;
+            color: #5d4037;
+            letter-spacing: 0.06em;
+            font-family: var(--font-script);
+            text-align: center;
+        }
+        .card-envelope-outer {
+            perspective: 1200px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .card-envelope-container {
+            width: 280px;
+            height: 200px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .card-envelope-container.lifted {
+            transform: translateY(-20px);
+        }
+        .card-envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(160deg, #f9e8dc 0%, #f2d8c4 40%, #e8c8ae 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(100, 60, 40, 0.18);
+            border: 1px solid rgba(200, 160, 130, 0.3);
+            transition: opacity 0.5s;
+        }
+        .card-envelope-front.fading {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .card-envelope-flap-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            z-index: 4;
+            background: linear-gradient(175deg, #f5dcc8 0%, #ecc8a8 50%, #ddb890 100%);
+            border-radius: 12px 12px 0 0;
+            clip-path: polygon(0 0, 50% 80%, 100% 0);
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .card-envelope-flap-top.open {
+            transform: rotateX(185deg);
+        }
+        .card-envelope-seal-round {
+            position: absolute;
+            top: 62px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38px;
+            height: 38px;
+            background: #d4867c;
+            border-radius: 50%;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #fff;
+            transition: all 0.5s;
+        }
+        .card-envelope-seal-round.hidden-seal {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3);
+        }
+        .card-inside {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            right: 15px;
+            bottom: 10px;
+            background: #fffefb;
+            border-radius: 8px;
+            z-index: 1;
+            padding: 20px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s;
+            transform: translateY(0);
+            opacity: 0.7;
+        }
+        .card-inside.emerging {
+            transform: translateY(-50px);
+            opacity: 1;
+            z-index: 3;
+            box-shadow: 0 8px 32px rgba(100, 60, 40, 0.18);
+        }
+        .card-inside-greeting {
+            font-family: var(--font-script);
+            font-size: 1rem;
+            color: #5d4037;
+            letter-spacing: 0.04em;
+            line-height: 1.8;
+        }
+        .card-inside-signature {
+            margin-top: 12px;
+            font-family: var(--font-script);
+            color: #c97d7d;
+            font-size: 0.9rem;
+        }
+        .card-hint-click {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #8d6e63;
+            opacity: 0.7;
+            animation: hintPulse 2.5s infinite;
+        }
+
+        .surprise-btn {
+            display: inline-block;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            color: #c9b8a8;
+            background: transparent;
+            border: 1px solid rgba(180, 150, 130, 0.25);
+            border-radius: 20px;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: all 0.4s;
+            opacity: 0.6;
+            -webkit-tap-highlight-color: transparent;
+            margin-top: 10px;
+        }
+        .surprise-btn:hover {
+            opacity: 0.9;
+            border-color: rgba(180, 140, 120, 0.5);
+        }
+        /* 小惊喜按钮高亮 */
+        .surprise-btn.highlight {
+            opacity: 1;
+            border-color: #c97d7d;
+            color: #c97d7d;
+            background: rgba(201, 125, 125, 0.08);
+            box-shadow: 0 0 12px rgba(201, 125, 125, 0.3);
+            animation: surprisePulse 1.5s ease-in-out infinite;
+        }
+        @keyframes surprisePulse {
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(201, 125, 125, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(201, 125, 125, 0.5);
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            background: rgba(60, 30, 20, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-dialog {
+            background: #fffefb;
+            border-radius: 16px;
+            padding: 36px 28px;
+            text-align: center;
+            max-width: 380px;
+            width: 85%;
+            box-shadow: 0 20px 50px rgba(80, 40, 20, 0.3);
+            animation: modalIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes modalIn {
+            from {
+                transform: translateY(30px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-emoji {
+            font-size: 50px;
+            margin-bottom: 16px;
+        }
+        .modal-text {
+            font-family: var(--font-script);
+            font-size: 1.3rem;
+            color: #5d4037;
+            letter-spacing: 0.06em;
+        }
+        .modal-close {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 28px;
+            background: #c97d7d;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .modal-close:hover {
+            background: #b86868;
+        }
+
+        /* 文档悬浮窗 */
+        .doc-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2100;
+            background: rgba(60, 30, 20, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+        .doc-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .doc-modal-dialog {
+            background: #fffefb;
+            border-radius: 16px;
+            padding: 40px 32px;
+            width: 80vw;
+            height: 80vh;
+            max-width: 800px;
+            box-shadow: 0 20px 50px rgba(80, 40, 20, 0.35);
+            position: relative;
+            cursor: default;
+            animation: docModalIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow-y: auto;
+            border: 1px solid rgba(200, 160, 130, 0.3);
+        }
+        @keyframes docModalIn {
+            from {
+                transform: translateY(40px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        .doc-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(200, 160, 140, 0.2);
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #8d6e63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            z-index: 10;
+        }
+        .doc-modal-close:hover {
+            background: rgba(200, 140, 120, 0.4);
+            color: #5d4037;
+        }
+        .doc-content {
+            font-family: var(--font-serif);
+            color: #4a3228;
+            line-height: 2;
+            letter-spacing: 0.04em;
+            font-size: 1.05rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .doc-content .char {
+            display: inline;
+            opacity: 0;
+            animation: charAppear 0.05s ease forwards;
+        }
+        @keyframes charAppear {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .doc-modal-title {
+            text-align: center;
+            font-family: var(--font-script);
+            font-size: 1.3rem;
+            color: #5d4037;
+            letter-spacing: 0.06em;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(200, 160, 140, 0.3);
+        }
+
+        @media (max-width: 700px) {
+            .film-frame {
+                width: 120px;
+            }
+            .frame-img {
+                height: 80px;
+            }
+            .frame-placeholder {
+                height: 80px;
+                font-size: 1.5rem;
+            }
+            .envelope {
+                width: 130px;
+                height: 90px;
+            }
+            .envelope-flap {
+                height: 55px;
+            }
+            .envelope-body {
+                height: 60px;
+            }
+            .envelope-seal {
+                width: 30px;
+                height: 30px;
+                top: 38px;
+                font-size: 14px;
+            }
+            .card-envelope-container {
+                width: 240px;
+                height: 170px;
+            }
+            .card-envelope-flap-top {
+                height: 80px;
+            }
+            .card-envelope-seal-round {
+                width: 30px;
+                height: 30px;
+                top: 50px;
+                font-size: 13px;
+            }
+            .film-strip::before,
+            .film-strip::after {
+                height: 8px;
+            }
+            .film-strip::before {
+                top: -8px;
+            }
+            .film-strip::after {
+                bottom: -8px;
+            }
+            .card-inside-greeting {
+                font-size: 0.85rem;
+            }
+            .doc-modal-dialog {
+                width: 90vw;
+                height: 85vh;
+                padding: 30px 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .film-frame {
+                width: 100px;
+            }
+            .frame-img {
+                height: 65px;
+            }
+            .frame-placeholder {
+                height: 65px;
+                font-size: 1.2rem;
+            }
+            .frame-caption {
+                font-size: 0.6rem;
+                min-height: 24px;
+            }
+            .film-strip::before,
+            .film-strip::after {
+                height: 6px;
+            }
+            .film-strip::before {
+                top: -6px;
+            }
+            .film-strip::after {
+                bottom: -6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <div class="sparkles" id="sparkles-container"></div>
+        <div class="intro-title-main">🌷 妈妈，请点击这里 🌷</div>
+        <div class="envelope-wrapper" id="envelope-wrapper">
+            <div class="envelope">
+                <div class="envelope-flap" id="envelope-flap"></div>
+                <div class="envelope-seal" id="envelope-seal">❤</div>
+                <div class="envelope-body"></div>
+            </div>
+        </div>
+        <div class="intro-hint">一份心意，等待您开启…</div>
+    </div>
+
+    <button class="music-btn" id="music-btn">🎵</button>
+
+    <div class="page-indicator" id="page-indicator">
+        <div class="page-dot active" data-page="0"></div>
+        <div class="page-dot" data-page="1"></div>
+        <div class="page-dot" data-page="2"></div>
+    </div>
+
+    <div class="swiper-container" id="swiper-container">
+        <div class="swiper-wrapper" id="swiper-wrapper">
+
+            <div class="swiper-slide slide-film" id="slide-film">
+                <div class="swipe-hint">👉</div>
+                <h2 class="film-title">📽️ 时光胶片 · 点击展开回忆</h2>
+                <div class="film-stage" id="film-stage"></div>
+                <button class="replay-btn" id="replay-btn">🔄 重温</button>
+                <p class="film-hint" id="film-hint">👆 点击闪烁的胶片查看回忆</p>
+            </div>
+
+            <div class="swiper-slide slide-wordcloud" id="slide-wordcloud">
+                <div class="swipe-hint">👉</div>
+                <h2 class="wordcloud-title">🖼️ 妈妈的关键词 · 爱的词云</h2>
+                <div class="wordcloud-frame">
+                    <img id="wordcloud-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='350'%3E%3Crect fill='%23fefaf5' width='500' height='350' rx='12'/%3E%3Ctext x='250' y='140' text-anchor='middle' font-family='serif' fill='%23c97d7d' font-size='22'%3E🌸 请替换为您的词云图片 🌸%3C/text%3E%3C/svg%3E"
+                    alt="词云图">
+                </div>
+                <p class="wordcloud-subtitle">每一个关键词，都是爱的证明</p>
+            </div>
+
+            <div class="swiper-slide slide-card" id="slide-card">
+                <div class="swipe-hint last">👉</div>
+                <h2 class="card-section-title">💌 拆开这份心意贺卡</h2>
+                <div class="card-envelope-outer" id="card-envelope-outer">
+                    <div class="card-envelope-container" id="card-envelope-container">
+                        <div class="card-envelope-front" id="card-envelope-front">
+                            <span style="font-size:40px;opacity:0.8;">✉️</span>
+                        </div>
+                        <div class="card-envelope-flap-top" id="card-envelope-flap-top"></div>
+                        <div class="card-envelope-seal-round" id="card-envelope-seal-round">❤</div>
+                        <div class="card-inside" id="card-inside">
+                            <p class="card-inside-greeting">
+                               岁月无声，爱意绵长。<br>
+                               在我的成长路上，<br>
+                               最坚定的陪伴，<br>
+                               最温暖、<br>
+                               永远来自我的妈妈。<br>
+                            </p>
+                            <p class="card-inside-signature">--你的儿子</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="card-hint-click" id="card-hint">👆 点击信封拆开贺卡</p>
+                <button class="surprise-btn" id="surprise-btn">🌿 小惊喜？</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-dialog">
+            <div class="modal-emoji">🎁</div>
+            <p class="modal-text">看看你的电脑包？</p>
+            <button class="modal-close" id="modal-close">好的 💝</button>
+        </div>
+    </div>
+
+    <div class="doc-modal-overlay" id="doc-modal-overlay">
+        <div class="doc-modal-dialog" id="doc-modal-dialog">
+            <button class="doc-modal-close" id="doc-modal-close-btn">✕</button>
+            <div class="doc-modal-title">💌 妈妈，我想对您说</div>
+            <div class="doc-content" id="doc-content"></div>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop preload="auto" src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYrYa3gAAAAAAAD/+1DEAAAHAAb/AAAAIAAAP8AAAARMQUAABMQUAABLAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAvcAAAGOZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+1DEAAAHAAb/AAAAIAAAP8AAAARMQUAABMQUAABLAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAvcAAAGOZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+1DEAAAHAAb/AAAAIAAAP8AAAARMQUAABMQUAABLAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAvcAAAGOZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/+1DEAAAHAAb/AAAAIAAAP8AAAARMQUAABMQUAABLAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAvcAAAGOZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"></audio>
+
+    <script>
+        (function() {
+            const introOverlay = document.getElementById('intro-overlay');
+            const envelopeFlap = document.getElementById('envelope-flap');
+            const envelopeSeal = document.getElementById('envelope-seal');
+            const envelopeWrapper = document.getElementById('envelope-wrapper');
+            const sparklesContainer = document.getElementById('sparkles-container');
+            const bgMusic = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
+            const swiperWrapper = document.getElementById('swiper-wrapper');
+            const swiperContainer = document.getElementById('swiper-container');
+            const pageDots = document.querySelectorAll('.page-dot');
+
+            const filmStage = document.getElementById('film-stage');
+            const replayBtn = document.getElementById('replay-btn');
+            const filmHint = document.getElementById('film-hint');
+
+            const cardEnvelopeOuter = document.getElementById('card-envelope-outer');
+            const cardEnvelopeFlapTop = document.getElementById('card-envelope-flap-top');
+            const cardEnvelopeSeal = document.getElementById('card-envelope-seal-round');
+            const cardEnvelopeFront = document.getElementById('card-envelope-front');
+            const cardInside = document.getElementById('card-inside');
+            const cardHint = document.getElementById('card-hint');
+            const cardEnvelopeContainer = document.getElementById('card-envelope-container');
+
+            const surpriseBtn = document.getElementById('surprise-btn');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalClose = document.getElementById('modal-close');
+
+            const docModalOverlay = document.getElementById('doc-modal-overlay');
+            const docModalCloseBtn = document.getElementById('doc-modal-close-btn');
+            const docContent = document.getElementById('doc-content');
+            const docModalDialog = document.getElementById('doc-modal-dialog');
+
+            let isMusicPlaying = false;
+            let introDone = false;
+            let isCardOpened = false;
+            let currentPage = 0;
+            let isTransitioning = false;
+            const totalPages = 3;
+            let hasTypingPlayed = false;
+            let docTextLoaded = '';
+
+            // ==================== 滑动逻辑 ====================
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            function goToPage(index) {
+                if (index < 0 || index >= totalPages || isTransitioning) return;
+                isTransitioning = true;
+                currentPage = index;
+                swiperWrapper.style.transform = `translateX(-${currentPage * 100}vw)`;
+                updateDots();
+                document.querySelectorAll('.swipe-hint').forEach((hint, i) => {
+                    hint.classList.toggle('last', i === totalPages - 1);
+                });
+                setTimeout(() => { isTransitioning = false; }, 500);
+            }
+
+            function updateDots() {
+                pageDots.forEach(dot => {
+                    dot.classList.toggle('active', parseInt(dot.dataset.page) === currentPage);
+                });
+            }
+
+            swiperContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            swiperContainer.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                const dy = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                    if (dx < -30) goToPage(currentPage + 1);
+                    else if (dx > 30) goToPage(currentPage - 1);
+                }
+            });
+
+            swiperContainer.addEventListener('wheel', (e) => {
+                if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+                if (e.deltaY > 30) goToPage(currentPage + 1);
+                else if (e.deltaY < -30) goToPage(currentPage - 1);
+            }, { passive: true });
+
+            pageDots.forEach(dot => {
+                dot.addEventListener('click', () => goToPage(parseInt(dot.dataset.page)));
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') goToPage(currentPage + 1);
+                if (e.key === 'ArrowLeft') goToPage(currentPage - 1);
+            });
+
+            // ==================== 胶片逻辑 ====================
+            const filmData = [
+                { trail: 0, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23f5e0d0' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E👶%3C/text%3E%3C/svg%3E",
+                    caption: "那年夏天，您牵着我的手", emoji: "👶" },
+                { trail: 0, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fce4d6' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E📚%3C/text%3E%3C/svg%3E",
+                    caption: "深夜陪读的那盏灯", emoji: "📚" },
+                { trail: 0, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fef0e5' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🎂%3C/text%3E%3C/svg%3E",
+                    caption: "您为我做的生日面", emoji: "🎂" },
+                { trail: 1, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23f7e8da' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🏠%3C/text%3E%3C/svg%3E",
+                    caption: "家的温暖，从未改变", emoji: "🏠" },
+                { trail: 1, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fdf3ea' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🌅%3C/text%3E%3C/svg%3E",
+                    caption: "如今，换我陪您看夕阳", emoji: "🌅" },
+                { trail: 1, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23f9f0e6' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🌸%3C/text%3E%3C/svg%3E",
+                    caption: "您的笑容，是我最大的幸福", emoji: "🌸" },
+                { trail: 2, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23faf3ed' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🌻%3C/text%3E%3C/svg%3E",
+                    caption: "您教会我坚强与善良", emoji: "🌻" },
+                { trail: 2, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fef5ee' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E💝%3C/text%3E%3C/svg%3E",
+                    caption: "每一次拥抱都那么温暖", emoji: "💝" },
+                { trail: 2, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fff8f2' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E💐%3C/text%3E%3C/svg%3E",
+                    caption: "妈妈，永远爱您", emoji: "💐" }
+            ];
+
+            const frameW = 150;
+            const frameStep = frameW;
+            const stripW = frameStep * 3;
+            const stripConfigs = [
+                { x: 5, y: 15, angle: 20 },
+                { x: 30, y: 35, angle: -12 },
+                { x: 5, y: 55, angle: 8 },
+            ];
+
+            let allStrips = [];
+            let allFrames = [];
+            let currentTrail = 0;
+            let revealedInTrail = [0, 0, 0];
+
+            function createAllStrips() {
+                filmStage.innerHTML = '';
+                allStrips = [];
+                allFrames = [];
+                for (let s = 0; s < 3; s++) {
+                    const strip = document.createElement('div');
+                    strip.className = `film-strip strip-${s}`;
+                    strip.dataset.strip = s;
+                    strip.style.cssText = `position:absolute;width:${stripW}px;height:170px;opacity:0;pointer-events:none;overflow:visible;`;
+                    const label = document.createElement('div');
+                    label.className = 'trail-label';
+                    label.textContent = `📽️ 片段 ${s + 1}`;
+                    strip.appendChild(label);
+                    filmStage.appendChild(strip);
+                    const startIdx = s * 3;
+                    for (let f = 0; f < 3; f++) {
+                        const dataIdx = startIdx + f;
+                        const data = filmData[dataIdx];
+                        const frame = document.createElement('div');
+                        frame.className = 'film-frame';
+                        frame.dataset.index = dataIdx;
+                        frame.dataset.trail = s;
+                        frame.dataset.revealed = 'false';
+                        frame.style.left = (f * frameStep) + 'px';
+                        frame.style.top = '0';
+                        frame.style.width = frameW + 'px';
+                        frame.style.height = '100%';
+                        frame.style.opacity = '0';
+                        frame.style.transform = 'scale(0.5)';
+                        const outer = document.createElement('div');
+                        outer.className = 'frame-outer';
+                        const inner = document.createElement('div');
+                        inner.className = 'frame-inner';
+                        const img = document.createElement('img');
+                        img.className = 'frame-img';
+                        img.src = data.src;
+                        img.alt = data.caption;
+                        img.onerror = function() {
+                            this.style.display = 'none';
+                            const ph = document.createElement('div');
+                            ph.className = 'frame-placeholder';
+                            ph.textContent = data.emoji;
+                            inner.insertBefore(ph, inner.firstChild);
+                        };
+                        const caption = document.createElement('div');
+                        caption.className = 'frame-caption';
+                        caption.textContent = data.caption;
+                        inner.appendChild(img);
+                        inner.appendChild(caption);
+                        outer.appendChild(inner);
+                        frame.appendChild(outer);
+                        const dot = document.createElement('span');
+                        dot.className = 'click-dot';
+                        dot.textContent = '👆 点击';
+                        frame.appendChild(dot);
+                        frame.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            handleFrameClick(frame, s);
+                        });
+                        strip.appendChild(frame);
+                        allFrames.push(frame);
+                    }
+                    allStrips.push(strip);
+                }
+            }
+
+            function showStrip(trailIndex) {
+                const config = stripConfigs[trailIndex];
+                const strip = allStrips[trailIndex];
+                strip.style.left = config.x + '%';
+                strip.style.top = config.y + '%';
+                strip.style.transform = `rotate(${config.angle}deg)`;
+                strip.style.transformOrigin = 'top left';
+                strip.style.opacity = '1';
+                strip.style.pointerEvents = 'auto';
+                strip.classList.add('active');
+                strip.classList.add('scrolling-teeth');
+                setTimeout(() => strip.classList.remove('scrolling-teeth'), 2000);
+                const frames = strip.querySelectorAll('.film-frame');
+                frames.forEach((frame, i) => {
+                    if (frame.dataset.revealed === 'true') return;
+                    setTimeout(() => {
+                        frame.classList.add('present');
+                        frame.style.opacity = '1';
+                        frame.style.transform = 'scale(1)';
+                    }, i * 250);
+                });
+                filmHint.textContent = `✨ 第${trailIndex + 1}段回忆展开中…点击闪烁的胶片 ✨`;
+            }
+
+            function handleFrameClick(frame, trailIndex) {
+                if (trailIndex !== currentTrail) { shakeFrame(frame); return; }
+                if (frame.dataset.revealed === 'true') return;
+                revealFrame(frame);
+                revealedInTrail[trailIndex]++;
+                if (revealedInTrail[trailIndex] >= 3) setTimeout(() => advanceToNextTrail(), 1000);
+            }
+
+            function revealFrame(frame) {
+                frame.dataset.revealed = 'true';
+                frame.classList.add('revealed');
+                frame.classList.remove('present');
+                frame.style.transform = 'scale(1)';
+                spawnPetals(3);
+            }
+
+            function shakeFrame(frame) {
+                const orig = frame.style.transform;
+                frame.style.transition = 'transform 0.1s ease';
+                frame.style.transform = 'translateX(-8px)';
+                setTimeout(() => { frame.style.transform = 'translateX(8px)'; }, 100);
+                setTimeout(() => { frame.style.transform = orig;
+                    frame.style.transition = ''; }, 200);
+            }
+
+            function advanceToNextTrail() {
+                if (currentTrail < 2) { currentTrail++;
+                    showStrip(currentTrail); } else {
+                    filmHint.textContent = '💝 所有回忆都已珍藏';
+                    replayBtn.classList.add('show');
+                    spawnPetals(18);
+                }
+            }
+
+            function startFirstTrail() {
+                currentTrail = 0;
+                revealedInTrail = [0, 0, 0];
+                replayBtn.classList.remove('show');
+                allFrames.forEach(frame => {
+                    frame.dataset.revealed = 'false';
+                    frame.classList.remove('revealed', 'present');
+                    frame.style.opacity = '0';
+                    frame.style.transform = 'scale(0.5)';
+                });
+                allStrips.forEach(strip => { strip.style.opacity = '0';
+                    strip.style.pointerEvents = 'none';
+                    strip.classList.remove('active', 'scrolling-teeth'); });
+                setTimeout(() => showStrip(0), 400);
+            }
+            replayBtn.addEventListener('click', () => { startFirstTrail();
+                spawnPetals(8); });
+
+            // ==================== 开场 ====================
+            function createSparkles() {
+                for (let i = 0; i < 35; i++) {
+                    const s = document.createElement('div');
+                    s.className = 'sparkle';
+                    s.style.left = Math.random() * 100 + '%';
+                    s.style.top = Math.random() * 100 + '%';
+                    s.style.animationDelay = Math.random() * 4 + 's';
+                    s.style.animationDuration = (3 + Math.random() * 5) + 's';
+                    s.style.width = (2 + Math.random() * 5) + 'px';
+                    s.style.height = s.style.width;
+                    sparklesContainer.appendChild(s);
+                }
+            }
+            createSparkles();
+
+            function handleIntroClick(e) {
+                if (introDone) return;
+                introDone = true;
+                envelopeFlap.classList.add('open');
+                envelopeSeal.classList.add('fade-out');
+                playMusic();
+                spawnPetals(25);
+                envelopeWrapper.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+                envelopeWrapper.style.transform = 'scale(1.1)';
+                setTimeout(() => { envelopeWrapper.style.transform = 'scale(1)'; }, 300);
+                setTimeout(() => { introOverlay.classList.add('hidden');
+                    setTimeout(() => startFirstTrail(), 800); }, 900);
+            }
+            introOverlay.addEventListener('click', handleIntroClick);
+            introOverlay.addEventListener('touchend', e => { if (!introDone) { e.preventDefault();
+                    handleIntroClick(); } });
+
+            function spawnPetals(count) {
+                const emojis = ['🌸', '💮', '🌷', '🌺', '💐', '🌼', '🌻', '🪷', '✿', '❀'];
+                for (let i = 0; i < count; i++) {
+                    const p = document.createElement('span');
+                    p.className = 'petal';
+                    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    p.style.left = Math.random() * 90 + '%';
+                    p.style.top = -(20 + Math.random() * 60) + 'px';
+                    p.style.setProperty('--drift', (Math.random() - 0.5) * 250 + 'px');
+                    p.style.setProperty('--spin', (Math.random() * 720 - 360) + 'deg');
+                    p.style.animationDuration = (2.5 + Math.random() * 4) + 's';
+                    p.style.animationDelay = Math.random() * 0.6 + 's';
+                    p.style.fontSize = (16 + Math.random() * 28) + 'px';
+                    document.body.appendChild(p);
+                    setTimeout(() => { if (p.parentNode) p.remove(); }, parseFloat(p.style.animationDuration) * 1000 +
+                        800);
+                }
+            }
+
+            function playMusic() {
+                if (!isMusicPlaying) {
+                    bgMusic.volume = 0.45;
+                    bgMusic.play().then(() => { isMusicPlaying = true;
+                        musicBtn.textContent = '🎵';
+                        musicBtn.classList.add('playing'); }).catch(() => { musicBtn.textContent = '🔇'; });
+                }
+            }
+            musicBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                if (isMusicPlaying) { bgMusic.pause();
+                    isMusicPlaying = false;
+                    musicBtn.textContent = '🔇';
+                    musicBtn.classList.remove('playing'); } else {
+                    bgMusic.play().then(() => { isMusicPlaying = true;
+                        musicBtn.textContent = '🎵';
+                        musicBtn.classList.add('playing'); }).catch(() => {});
+                }
+            });
+
+            // ==================== 贺卡 ====================
+            function openCard() {
+                if (isCardOpened) return;
+                isCardOpened = true;
+                cardHint.style.opacity = '0';
+                cardEnvelopeSeal.classList.add('hidden-seal');
+                setTimeout(() => cardEnvelopeFlapTop.classList.add('open'), 150);
+                setTimeout(() => cardEnvelopeFront.classList.add('fading'), 400);
+                setTimeout(() => { cardInside.classList.add('emerging');
+                    cardEnvelopeContainer.classList.add('lifted'); }, 550);
+                setTimeout(() => spawnPetals(12), 700);
+                setTimeout(() => { cardHint.textContent = '💝 愿这份心意永远温暖您';
+                    cardHint.style.opacity = '0.9'; }, 900);
+                setTimeout(() => { openDocModal(); }, 2000);
+            }
+            cardEnvelopeOuter.addEventListener('click', openCard);
+
+            // ==================== 小惊喜弹窗 ====================
+            surpriseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                modalOverlay.classList.add('active');
+            });
+            modalClose.addEventListener('click', () => modalOverlay.classList.remove('active'));
+            modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) modalOverlay.classList.remove(
+                    'active'); });
+
+            // ==================== 文档悬浮窗（仅读取txt） ====================
+            let docChars = [];
+            let docCharIndex = 0;
+            let docTypingTimer = null;
+            let docFullText = '';
+
+            function loadDocText() {
+    // 直接内置文字，无需文件读取
+    docFullText = `岁月无声，爱意绵长。在我的成长路上，最温暖、最坚定的陪伴，永远来自我的妈妈。她用一件件平凡的小事，把温柔与偏爱洒满我的生活。又是一年母亲节，我想借着这个日子，好好诉说藏在心底的感动与感恩。
+
+中考完的暑假。你主动带我前往上海，去了迪士尼乐园。那是我说了一句①。还记得出发前你提前就做了攻略，从预约门票到规划游园路线，甚至连哪几个项目要玩、好玩都早已查过小红书。那是我第一次真正意义上抛开学业压力好好享受生活。
+
+高一大病时，当你听到"要住院"三个字时的揪心，支付的果断，我明白，你总是在种种细节中表达无声的爱。在病床上，你关心的言语无意是最好的证明。你每天提前下班就往医院跑，带饮料，带吃的，与医生交谈，与我谈论运动会的事情。遇到问题，你也会立马给出方案，还记得生病期间唯一一次单发的消息是②。我退烧那天，你拿着出院报告单，看着你憔悴的脸，才懂你所有的坚强都是为我撑起的伞。
+
+时间来到高一下学期，学考与统考的压力促使我启动备考计划。每天大强度的学习中，也能提到电话另一头传来的③。你知道我的性格，尊重我的安排，在考试失利时给与鼓励与激励......你的支持将会转化为学习路上的最大动力。
+
+其实，平时的我不是不想说，理科的头脑使我无法合理的表达。你做的一切我都记得，你的关心已深植我心。原来妈妈不是天生坚强，只是为了我，甘愿褪去软弱，扛起生活的责任。如今我慢慢长大，渐渐读懂她所有的付出与温柔。往后的日子，我会学着懂事、学着体谅，用我的陪伴与努力回报她的爱意。愿时光温柔善待我的妈妈，愿她岁岁平安、日日欢喜，永远被爱，永远温暖如初。
+
+母爱是一泓无声的清泉，于岁月荒芜处，滋养我岁岁成长。
+世间万般盛大，皆抵不过母亲藏在烟火琐碎里的岁岁偏爱。
+岁月无声更迭，母爱恒久温热，是人生终身的底气与归途。
+
+妈妈，祝您母亲节快乐！`;
+    // 准备逐字显示的内容
+    prepareDocContent();
+}
+
+            function prepareDocContent() {
+                docContent.innerHTML = '';
+                docChars = docFullText.split('');
+                docCharIndex = 0;
+            }
+
+            function typeNextChar() {
+                if (docCharIndex < docChars.length) {
+                    const span = document.createElement('span');
+                    span.className = 'char';
+                    span.textContent = docChars[docCharIndex];
+                    docContent.appendChild(span);
+                    docCharIndex++;
+                    docTypingTimer = setTimeout(typeNextChar, 40);
+                }
+            }
+
+            function showAllText() {
+                if (docTypingTimer) { clearTimeout(docTypingTimer);
+                    docTypingTimer = null; }
+                if (docCharIndex < docChars.length) {
+                    docContent.innerHTML = docFullText;
+                    docCharIndex = docChars.length;
+                }
+            }
+
+            function openDocModal() {
+                docModalOverlay.classList.add('active');
+                prepareDocContent();
+                if (!hasTypingPlayed) {
+                    hasTypingPlayed = true;
+                    setTimeout(() => { typeNextChar(); }, 300);
+                } else {
+                    docContent.innerHTML = docFullText;
+                    docCharIndex = docChars.length;
+                }
+            }
+
+            function closeDocModal() {
+                docModalOverlay.classList.remove('active');
+                if (docTypingTimer) { clearTimeout(docTypingTimer);
+                    docTypingTimer = null; }
+                // 高亮小惊喜按钮
+                surpriseBtn.classList.add('highlight');
+                // 确保信封保持开启状态，再次点击可以重新打开悬浮窗（显示全部文字）
+                cardEnvelopeOuter.removeEventListener('click', openCard);
+                cardEnvelopeOuter.addEventListener('click', () => {
+                    if (isCardOpened) {
+                        openDocModal();
+                    }
+                });
+            }
+
+            docModalCloseBtn.addEventListener('click', (e) => { e.stopPropagation();
+                closeDocModal(); });
+            docModalOverlay.addEventListener('click', (e) => { if (e.target === docModalOverlay) closeDocModal(); });
+            docModalDialog.addEventListener('click', (e) => {
+                if (e.target.closest('.doc-modal-close')) return;
+                showAllText();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && docModalOverlay.classList.contains('active')) closeDocModal();
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) modalOverlay.classList.remove(
+                    'active');
+            });
+
+            // ==================== 初始化 ====================
+            createAllStrips();
+            loadDocText();
+            setTimeout(() => {
+                if (!introDone) {
+                    envelopeWrapper.style.animation = 'envelopeFloat 1.5s ease-in-out 3';
+                    setTimeout(() => { if (!introDone) envelopeWrapper.style.animation =
+                            'envelopeFloat 3s ease-in-out infinite'; }, 4500);
+                }
+            }, 8000);
+            console.log('🌸 妈妈，母亲节快乐！');
+        })();
+    </script>
+</body>
+</html>
