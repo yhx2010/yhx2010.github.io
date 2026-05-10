@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>妈妈，母亲节快乐 💐</title>
     <style>
         :root {
@@ -30,8 +30,14 @@
             color: #4a3228;
             overflow: hidden;
             height: 100vh;
+            height: 100dvh;
             width: 100vw;
+            width: 100dvw;
             touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
         #intro-overlay {
@@ -40,6 +46,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
+            height: 100dvh;
             z-index: 1000;
             background: radial-gradient(ellipse at center, #fef6f0 0%, #f5e6d8 40%, #e8d5c8 100%);
             display: flex;
@@ -250,20 +257,26 @@
 
         .swiper-container {
             width: 100vw;
+            width: 100dvw;
             height: 100vh;
+            height: 100dvh;
             position: relative;
             overflow: hidden;
+            -webkit-overflow-scrolling: touch;
         }
         .swiper-wrapper {
             display: flex;
-            width: 300vw;
+            width: calc(100vw * 3);
+            width: calc(100dvw * 3);
             height: 100%;
             transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
         }
         .swiper-slide {
             width: 100vw;
+            width: 100dvw;
             height: 100vh;
+            height: 100dvh;
             flex-shrink: 0;
             overflow-y: auto;
             overflow-x: hidden;
@@ -273,6 +286,15 @@
             justify-content: center;
             padding: 60px 24px;
             position: relative;
+            max-width: 100vw;
+            max-width: 100dvw;
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .swiper-slide {
+                height: 100vh;
+                height: 100dvh;
+            }
         }
 
         .page-indicator {
@@ -752,7 +774,6 @@
             opacity: 0.9;
             border-color: rgba(180, 140, 120, 0.5);
         }
-        /* 小惊喜按钮高亮 */
         .surprise-btn.highlight {
             opacity: 1;
             border-color: #c97d7d;
@@ -838,7 +859,6 @@
             background: #b86868;
         }
 
-        /* 文档悬浮窗 */
         .doc-modal-overlay {
             position: fixed;
             top: 0;
@@ -943,6 +963,13 @@
             border-bottom: 1px solid rgba(200, 160, 140, 0.3);
         }
 
+        input,
+        textarea,
+        select,
+        button {
+            font-size: 16px;
+        }
+
         @media (max-width: 700px) {
             .film-frame {
                 width: 120px;
@@ -997,12 +1024,26 @@
                 font-size: 0.85rem;
             }
             .doc-modal-dialog {
-                width: 90vw;
-                height: 85vh;
-                padding: 30px 20px;
+                width: 92vw;
+                height: 82vh;
+                height: 82dvh;
+                padding: 28px 16px;
+                border-radius: 12px;
+            }
+            .doc-modal-title {
+                font-size: 1.1rem;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+            }
+            .doc-content {
+                font-size: 0.95rem;
+                line-height: 1.8;
             }
         }
         @media (max-width: 480px) {
+            html {
+                font-size: 14px;
+            }
             .film-frame {
                 width: 100px;
             }
@@ -1026,6 +1067,11 @@
             }
             .film-strip::after {
                 bottom: -6px;
+            }
+            .film-title,
+            .wordcloud-title,
+            .card-section-title {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -1086,13 +1132,14 @@
                         <div class="card-envelope-seal-round" id="card-envelope-seal-round">❤</div>
                         <div class="card-inside" id="card-inside">
                             <p class="card-inside-greeting">
-                               岁月无声，爱意绵长。<br>
-                               在我的成长路上，<br>
-                               最坚定的陪伴，<br>
-                               最温暖、<br>
-                               永远来自我的妈妈。<br>
+                                亲爱的妈妈：<br><br>
+                                感谢您把我带到这个世界<br>
+                                用爱浇灌我成长<br>
+                                您是我生命中最温暖的光<br><br>
+                                愿时光慢些走<br>
+                                愿您永远健康、幸福<br>
                             </p>
-                            <p class="card-inside-signature">--你的儿子</p>
+                            <p class="card-inside-signature">—— 永远爱您的孩子 ❤</p>
                         </div>
                     </div>
                 </div>
@@ -1162,7 +1209,25 @@
             let isTransitioning = false;
             const totalPages = 3;
             let hasTypingPlayed = false;
-            let docTextLoaded = '';
+
+            // ==================== 移动端适配 ====================
+            function setMobileViewport() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+                const vw = window.innerWidth * 0.01;
+                document.documentElement.style.setProperty('--vw', `${vw}px`);
+            }
+            setMobileViewport();
+            window.addEventListener('resize', () => {
+                setMobileViewport();
+                swiperWrapper.style.transform = `translateX(-${currentPage * 100}vw)`;
+            });
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    setMobileViewport();
+                    swiperWrapper.style.transform = `translateX(-${currentPage * 100}vw)`;
+                }, 100);
+            });
 
             // ==================== 滑动逻辑 ====================
             let touchStartX = 0;
@@ -1491,32 +1556,30 @@
             modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) modalOverlay.classList.remove(
                     'active'); });
 
-            // ==================== 文档悬浮窗（仅读取txt） ====================
+            // ==================== 文档悬浮窗（内置文字） ====================
             let docChars = [];
             let docCharIndex = 0;
             let docTypingTimer = null;
             let docFullText = '';
 
             function loadDocText() {
-    // 直接内置文字，无需文件读取
-    docFullText = `岁月无声，爱意绵长。在我的成长路上，最温暖、最坚定的陪伴，永远来自我的妈妈。她用一件件平凡的小事，把温柔与偏爱洒满我的生活。又是一年母亲节，我想借着这个日子，好好诉说藏在心底的感动与感恩。
+                docFullText = `岁月无声，爱意绵长。在我的成长路上，最温暖、最坚定的陪伴，永远来自我的妈妈。她用一件件平凡的小事，把温柔与偏爱洒满我的生活。又是一年母亲节，我想借着这个日子，好好诉说藏在心底的感动与感恩。
 
-中考完的暑假。你主动带我前往上海，去了迪士尼乐园。那是我说了一句①。还记得出发前你提前就做了攻略，从预约门票到规划游园路线，甚至连哪几个项目要玩、好玩都早已查过小红书。那是我第一次真正意义上抛开学业压力好好享受生活。
+中考完的暑假。你主动带我前往上海，去了迪士尼乐园。那是我说了一句"想去迪士尼"。还记得出发前你提前就做了攻略，从预约门票到规划游园路线，甚至连哪几个项目要玩、好玩都早已查过小红书。那是我第一次真正意义上抛开学业压力好好享受生活。
 
-高一大病时，当你听到"要住院"三个字时的揪心，支付的果断，我明白，你总是在种种细节中表达无声的爱。在病床上，你关心的言语无意是最好的证明。你每天提前下班就往医院跑，带饮料，带吃的，与医生交谈，与我谈论运动会的事情。遇到问题，你也会立马给出方案，还记得生病期间唯一一次单发的消息是②。我退烧那天，你拿着出院报告单，看着你憔悴的脸，才懂你所有的坚强都是为我撑起的伞。
+高一大病时，当你听到"要住院"三个字时的揪心，支付的果断，我明白，你总是在种种细节中表达无声的爱。在病床上，你关心的言语无意是最好的证明。你每天提前下班就往医院跑，带饮料，带吃的，与医生交谈，与我谈论运动会的事情。遇到问题，你也会立马给出方案，还记得生病期间唯一一次单发的消息是"好好休息，别担心"。我退烧那天，你拿着出院报告单，看着你憔悴的脸，才懂你所有的坚强都是为我撑起的伞。
 
-时间来到高一下学期，学考与统考的压力促使我启动备考计划。每天大强度的学习中，也能提到电话另一头传来的③。你知道我的性格，尊重我的安排，在考试失利时给与鼓励与激励......你的支持将会转化为学习路上的最大动力。
+时间来到高一下学期，学考与统考的压力促使我启动备考计划。每天大强度的学习中，也能提到电话另一头传来的"加油，我相信你"。你知道我的性格，尊重我的安排，在考试失利时给与鼓励与激励......你的支持将会转化为学习路上的最大动力。
 
 其实，平时的我不是不想说，理科的头脑使我无法合理的表达。你做的一切我都记得，你的关心已深植我心。原来妈妈不是天生坚强，只是为了我，甘愿褪去软弱，扛起生活的责任。如今我慢慢长大，渐渐读懂她所有的付出与温柔。往后的日子，我会学着懂事、学着体谅，用我的陪伴与努力回报她的爱意。愿时光温柔善待我的妈妈，愿她岁岁平安、日日欢喜，永远被爱，永远温暖如初。
 
-母爱是一泓无声的清泉，于岁月荒芜处，滋养我岁岁成长。
-世间万般盛大，皆抵不过母亲藏在烟火琐碎里的岁岁偏爱。
-岁月无声更迭，母爱恒久温热，是人生终身的底气与归途。
+"母爱是一泓无声的清泉，于岁月荒芜处，滋养我岁岁成长。"
+"世间万般盛大，皆抵不过母亲藏在烟火琐碎里的岁岁偏爱。"
+"岁月无声更迭，母爱恒久温热，是人生终身的底气与归途。"
 
 妈妈，祝您母亲节快乐！`;
-    // 准备逐字显示的内容
-    prepareDocContent();
-}
+                prepareDocContent();
+            }
 
             function prepareDocContent() {
                 docContent.innerHTML = '';
@@ -1560,14 +1623,10 @@
                 docModalOverlay.classList.remove('active');
                 if (docTypingTimer) { clearTimeout(docTypingTimer);
                     docTypingTimer = null; }
-                // 高亮小惊喜按钮
                 surpriseBtn.classList.add('highlight');
-                // 确保信封保持开启状态，再次点击可以重新打开悬浮窗（显示全部文字）
                 cardEnvelopeOuter.removeEventListener('click', openCard);
                 cardEnvelopeOuter.addEventListener('click', () => {
-                    if (isCardOpened) {
-                        openDocModal();
-                    }
+                    if (isCardOpened) { openDocModal(); }
                 });
             }
 
