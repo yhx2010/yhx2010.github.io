@@ -266,8 +266,8 @@
         }
         .swiper-wrapper {
             display: flex;
-            width: calc(100vw * 3);
-            width: calc(100dvw * 3);
+            width: calc(100vw * 2);
+            width: calc(100dvw * 2);
             height: 100%;
             transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
@@ -284,7 +284,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px 24px;
+            padding: 60px 16px;
             position: relative;
             max-width: 100vw;
             max-width: 100dvw;
@@ -346,36 +346,45 @@
             }
         }
 
+        /* 页面1：胶片 */
         .slide-film {
             background: radial-gradient(circle at 30% 30%, rgba(232, 196, 196, 0.15) 0%, transparent 55%),
                 radial-gradient(circle at 70% 70%, rgba(212, 167, 116, 0.18) 0%, transparent 55%);
             background-color: #fdf6f0;
-            gap: 30px;
+            gap: 20px;
+            justify-content: flex-start;
+            padding-top: 80px;
         }
         .film-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #5d4037;
             letter-spacing: 0.06em;
             font-family: var(--font-script);
             text-align: center;
+            flex-shrink: 0;
         }
         .film-stage {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            min-height: 400px;
-            overflow: visible;
+            max-width: 500px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: 12px;
+            padding: 10px;
+            flex-shrink: 0;
         }
         .film-hint {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8d6e63;
             opacity: 0.8;
             letter-spacing: 0.04em;
+            flex-shrink: 0;
         }
         .replay-btn {
-            padding: 10px 28px;
-            font-size: 1rem;
+            padding: 8px 24px;
+            font-size: 0.9rem;
             color: #fff;
             background: #c97d7d;
             border: none;
@@ -388,6 +397,7 @@
             opacity: 0;
             transform: translateY(20px);
             pointer-events: none;
+            flex-shrink: 0;
         }
         .replay-btn.show {
             opacity: 1;
@@ -396,101 +406,24 @@
         }
         .replay-btn:hover {
             background: #b86868;
-            transform: translateY(-2px);
-        }
-
-        .film-strip {
-            position: absolute;
-            pointer-events: none;
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-            height: 180px;
-            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
-            background: #2c2c2c;
-            border-radius: 3px;
-            padding: 10px 0;
-            opacity: 0;
-        }
-        .film-strip.active {
-            pointer-events: auto;
-            opacity: 1;
-        }
-        .film-strip.strip-0 {
-            z-index: 1;
-        }
-        .film-strip.strip-1 {
-            z-index: 3;
-        }
-        .film-strip.strip-2 {
-            z-index: 5;
-        }
-
-        .film-strip::before,
-        .film-strip::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            z-index: 3;
-            pointer-events: none;
-        }
-        .film-strip::before {
-            top: -10px;
-            background: repeating-linear-gradient(90deg,
-                    transparent 0px, transparent 5px, #1a1a1a 5px, #1a1a1a 7px,
-                    transparent 7px, transparent 12px);
-            border-radius: 3px 3px 0 0;
-        }
-        .film-strip::after {
-            bottom: -10px;
-            background: repeating-linear-gradient(90deg,
-                    transparent 0px, transparent 5px, #1a1a1a 5px, #1a1a1a 7px,
-                    transparent 7px, transparent 12px);
-            border-radius: 0 0 3px 3px;
-        }
-        .film-strip.scrolling-teeth::before,
-        .film-strip.scrolling-teeth::after {
-            animation: teethScroll 0.3s linear infinite;
-        }
-        @keyframes teethScroll {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: -12px 0;
-            }
-        }
-
-        .trail-label {
-            position: absolute;
-            top: -24px;
-            left: 0;
-            font-size: 0.65rem;
-            color: #c9a87c;
-            font-family: var(--font-script);
-            letter-spacing: 0.06em;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s;
-            white-space: nowrap;
-        }
-        .film-strip.active .trail-label {
-            opacity: 0.8;
         }
 
         .film-frame {
-            position: absolute;
-            width: 150px;
+            position: relative;
+            width: 100%;
+            max-width: 150px;
+            margin: 0 auto;
             cursor: pointer;
             opacity: 0;
+            transform: scale(0.5);
             transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
             -webkit-tap-highlight-color: transparent;
             transform-origin: center center;
-            top: 0;
-            height: 100%;
+            aspect-ratio: 3/4;
         }
         .film-frame.present {
             opacity: 1;
+            transform: scale(1);
         }
         .film-frame.revealed {
             cursor: default;
@@ -514,22 +447,52 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            background: #2c2c2c;
+            border-radius: 3px;
+            padding: 8px 5px 8px 5px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+            overflow: visible;
         }
-        .film-frame:not(:last-child) .frame-outer::after {
+        .frame-outer::before,
+        .frame-outer::after {
             content: '';
             position: absolute;
-            right: 0;
-            top: 5%;
-            width: 1px;
-            height: 90%;
-            background: rgba(255, 255, 255, 0.08);
-            z-index: 5;
+            left: 0;
+            width: 100%;
+            height: 7px;
+            z-index: 3;
             pointer-events: none;
+        }
+        .frame-outer::before {
+            top: -7px;
+            background: repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 4px, #1a1a1a 4px, #1a1a1a 6px,
+                    transparent 6px, transparent 10px);
+            border-radius: 2px 2px 0 0;
+        }
+        .frame-outer::after {
+            bottom: -7px;
+            background: repeating-linear-gradient(90deg,
+                    transparent 0px, transparent 4px, #1a1a1a 4px, #1a1a1a 6px,
+                    transparent 6px, transparent 10px);
+            border-radius: 0 0 2px 2px;
+        }
+        .frame-outer.scrolling-teeth::before,
+        .frame-outer.scrolling-teeth::after {
+            animation: teethScroll 0.3s linear infinite;
+        }
+        @keyframes teethScroll {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -10px 0;
+            }
         }
 
         .frame-inner {
             background: #1a1a1a;
+            border-radius: 1px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -537,34 +500,34 @@
         }
         .frame-img {
             width: 100%;
-            height: 100px;
+            flex: 1;
             object-fit: cover;
             display: block;
             background: #3a3030;
-            flex-shrink: 0;
+            min-height: 80px;
         }
         .frame-placeholder {
             width: 100%;
-            height: 100px;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #2a2222;
             color: #c9a87c;
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-family: var(--font-serif);
-            flex-shrink: 0;
+            min-height: 80px;
         }
         .frame-caption {
-            padding: 6px 8px;
-            font-size: 0.7rem;
+            padding: 5px 6px;
+            font-size: 0.6rem;
             color: #e0d5c8;
             text-align: center;
             font-family: var(--font-script);
             letter-spacing: 0.04em;
             background: #222;
             line-height: 1.3;
-            min-height: 30px;
+            min-height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -572,68 +535,30 @@
         }
         .click-dot {
             position: absolute;
-            top: -24px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #ffd700;
             font-family: var(--font-script);
             animation: hintPulse 1.5s infinite;
             pointer-events: none;
             white-space: nowrap;
             z-index: 10;
-            text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
         }
         .film-frame.revealed .click-dot {
             display: none;
         }
 
-        .slide-wordcloud {
-            background: radial-gradient(circle at 50% 50%, rgba(232, 196, 196, 0.2) 0%, transparent 60%);
-            background-color: #fefaf5;
-            gap: 24px;
-        }
-        .wordcloud-title {
-            font-size: 1.5rem;
-            color: #5d4037;
-            letter-spacing: 0.06em;
-            font-family: var(--font-script);
-            text-align: center;
-        }
-        .wordcloud-frame {
-            display: inline-block;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(120, 80, 60, 0.15);
-            border: 1px solid rgba(200, 160, 140, 0.3);
-            max-width: 90vw;
-        }
-        .wordcloud-frame img {
-            max-width: 100%;
-            max-height: 50vh;
-            border-radius: 12px;
-            display: block;
-            background: linear-gradient(135deg, #fef5f0 0%, #fce8dd 30%, #fef0e8 60%);
-            min-width: 260px;
-            min-height: 180px;
-            object-fit: contain;
-        }
-        .wordcloud-subtitle {
-            font-size: 0.9rem;
-            color: #8d6e63;
-            letter-spacing: 0.04em;
-            font-family: var(--font-script);
-            text-align: center;
-        }
-
+        /* 页面2：贺卡 */
         .slide-card {
             background: radial-gradient(circle at 40% 60%, rgba(232, 196, 196, 0.15) 0%, transparent 55%);
             background-color: #fdf6f0;
-            gap: 20px;
+            gap: 16px;
         }
         .card-section-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #5d4037;
             letter-spacing: 0.06em;
             font-family: var(--font-script);
@@ -645,8 +570,8 @@
             -webkit-tap-highlight-color: transparent;
         }
         .card-envelope-container {
-            width: 280px;
-            height: 200px;
+            width: 260px;
+            height: 180px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -677,7 +602,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100px;
+            height: 90px;
             z-index: 4;
             background: linear-gradient(175deg, #f5dcc8 0%, #ecc8a8 50%, #ddb890 100%);
             border-radius: 12px 12px 0 0;
@@ -690,18 +615,18 @@
         }
         .card-envelope-seal-round {
             position: absolute;
-            top: 62px;
+            top: 56px;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             background: #d4867c;
             border-radius: 50%;
             z-index: 5;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             color: #fff;
             transition: all 0.5s;
         }
@@ -711,14 +636,14 @@
         }
         .card-inside {
             position: absolute;
-            top: 10px;
-            left: 15px;
-            right: 15px;
-            bottom: 10px;
+            top: 8px;
+            left: 12px;
+            right: 12px;
+            bottom: 8px;
             background: #fffefb;
             border-radius: 8px;
             z-index: 1;
-            padding: 20px 18px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -729,27 +654,27 @@
             opacity: 0.7;
         }
         .card-inside.emerging {
-            transform: translateY(-50px);
+            transform: translateY(-45px);
             opacity: 1;
             z-index: 3;
             box-shadow: 0 8px 32px rgba(100, 60, 40, 0.18);
         }
         .card-inside-greeting {
             font-family: var(--font-script);
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #5d4037;
             letter-spacing: 0.04em;
-            line-height: 1.8;
+            line-height: 1.7;
         }
         .card-inside-signature {
-            margin-top: 12px;
+            margin-top: 10px;
             font-family: var(--font-script);
             color: #c97d7d;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .card-hint-click {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8d6e63;
             opacity: 0.7;
             animation: hintPulse 2.5s infinite;
@@ -768,11 +693,7 @@
             transition: all 0.4s;
             opacity: 0.6;
             -webkit-tap-highlight-color: transparent;
-            margin-top: 10px;
-        }
-        .surprise-btn:hover {
-            opacity: 0.9;
-            border-color: rgba(180, 140, 120, 0.5);
+            margin-top: 8px;
         }
         .surprise-btn.highlight {
             opacity: 1;
@@ -816,9 +737,9 @@
         .modal-dialog {
             background: #fffefb;
             border-radius: 16px;
-            padding: 36px 28px;
+            padding: 30px 24px;
             text-align: center;
-            max-width: 380px;
+            max-width: 340px;
             width: 85%;
             box-shadow: 0 20px 50px rgba(80, 40, 20, 0.3);
             animation: modalIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -834,24 +755,24 @@
             }
         }
         .modal-emoji {
-            font-size: 50px;
-            margin-bottom: 16px;
+            font-size: 45px;
+            margin-bottom: 14px;
         }
         .modal-text {
             font-family: var(--font-script);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #5d4037;
             letter-spacing: 0.06em;
         }
         .modal-close {
             display: inline-block;
-            margin-top: 20px;
-            padding: 8px 28px;
+            margin-top: 18px;
+            padding: 8px 24px;
             background: #c97d7d;
             color: #fff;
             border: none;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -884,10 +805,10 @@
         .doc-modal-dialog {
             background: #fffefb;
             border-radius: 16px;
-            padding: 40px 32px;
-            width: 80vw;
+            padding: 35px 28px;
+            width: 85vw;
             height: 80vh;
-            max-width: 800px;
+            max-width: 600px;
             box-shadow: 0 20px 50px rgba(80, 40, 20, 0.35);
             position: relative;
             cursor: default;
@@ -907,15 +828,15 @@
         }
         .doc-modal-close {
             position: absolute;
-            top: 16px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
+            top: 14px;
+            right: 18px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: rgba(200, 160, 140, 0.2);
             border: none;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
             color: #8d6e63;
             display: flex;
             align-items: center;
@@ -931,9 +852,9 @@
         .doc-content {
             font-family: var(--font-serif);
             color: #4a3228;
-            line-height: 2;
+            line-height: 1.9;
             letter-spacing: 0.04em;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             white-space: pre-wrap;
             word-break: break-word;
         }
@@ -955,11 +876,11 @@
         .doc-modal-title {
             text-align: center;
             font-family: var(--font-script);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #5d4037;
             letter-spacing: 0.06em;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
             border-bottom: 1px solid rgba(200, 160, 140, 0.3);
         }
 
@@ -970,36 +891,41 @@
             font-size: 16px;
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 400px) {
             .film-frame {
-                width: 120px;
+                max-width: 110px;
             }
-            .frame-img {
-                height: 80px;
+            .frame-outer {
+                padding: 6px 4px 6px 4px;
+            }
+            .frame-outer::before,
+            .frame-outer::after {
+                height: 5px;
+            }
+            .frame-outer::before {
+                top: -5px;
+            }
+            .frame-outer::after {
+                bottom: -5px;
+            }
+            .frame-caption {
+                font-size: 0.55rem;
+                min-height: 22px;
+            }
+            .click-dot {
+                font-size: 0.55rem;
+                top: -18px;
             }
             .frame-placeholder {
-                height: 80px;
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+                min-height: 65px;
             }
-            .envelope {
-                width: 130px;
-                height: 90px;
-            }
-            .envelope-flap {
-                height: 55px;
-            }
-            .envelope-body {
-                height: 60px;
-            }
-            .envelope-seal {
-                width: 30px;
-                height: 30px;
-                top: 38px;
-                font-size: 14px;
+            .frame-img {
+                min-height: 65px;
             }
             .card-envelope-container {
-                width: 240px;
-                height: 170px;
+                width: 230px;
+                height: 160px;
             }
             .card-envelope-flap-top {
                 height: 80px;
@@ -1007,71 +933,11 @@
             .card-envelope-seal-round {
                 width: 30px;
                 height: 30px;
-                top: 50px;
+                top: 48px;
                 font-size: 13px;
             }
-            .film-strip::before,
-            .film-strip::after {
-                height: 8px;
-            }
-            .film-strip::before {
-                top: -8px;
-            }
-            .film-strip::after {
-                bottom: -8px;
-            }
             .card-inside-greeting {
-                font-size: 0.85rem;
-            }
-            .doc-modal-dialog {
-                width: 92vw;
-                height: 82vh;
-                height: 82dvh;
-                padding: 28px 16px;
-                border-radius: 12px;
-            }
-            .doc-modal-title {
-                font-size: 1.1rem;
-                margin-bottom: 16px;
-                padding-bottom: 12px;
-            }
-            .doc-content {
-                font-size: 0.95rem;
-                line-height: 1.8;
-            }
-        }
-        @media (max-width: 480px) {
-            html {
-                font-size: 14px;
-            }
-            .film-frame {
-                width: 100px;
-            }
-            .frame-img {
-                height: 65px;
-            }
-            .frame-placeholder {
-                height: 65px;
-                font-size: 1.2rem;
-            }
-            .frame-caption {
-                font-size: 0.6rem;
-                min-height: 24px;
-            }
-            .film-strip::before,
-            .film-strip::after {
-                height: 6px;
-            }
-            .film-strip::before {
-                top: -6px;
-            }
-            .film-strip::after {
-                bottom: -6px;
-            }
-            .film-title,
-            .wordcloud-title,
-            .card-section-title {
-                font-size: 1.2rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -1096,7 +962,6 @@
     <div class="page-indicator" id="page-indicator">
         <div class="page-dot active" data-page="0"></div>
         <div class="page-dot" data-page="1"></div>
-        <div class="page-dot" data-page="2"></div>
     </div>
 
     <div class="swiper-container" id="swiper-container">
@@ -1110,36 +975,25 @@
                 <p class="film-hint" id="film-hint">👆 点击闪烁的胶片查看回忆</p>
             </div>
 
-            <div class="swiper-slide slide-wordcloud" id="slide-wordcloud">
-                <div class="swipe-hint">👉</div>
-                <h2 class="wordcloud-title">🖼️ 妈妈的关键词 · 爱的词云</h2>
-                <div class="wordcloud-frame">
-                    <img id="wordcloud-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='350'%3E%3Crect fill='%23fefaf5' width='500' height='350' rx='12'/%3E%3Ctext x='250' y='140' text-anchor='middle' font-family='serif' fill='%23c97d7d' font-size='22'%3E🌸 请替换为您的词云图片 🌸%3C/text%3E%3C/svg%3E"
-                    alt="词云图">
-                </div>
-                <p class="wordcloud-subtitle">每一个关键词，都是爱的证明</p>
-            </div>
-
             <div class="swiper-slide slide-card" id="slide-card">
                 <div class="swipe-hint last">👉</div>
                 <h2 class="card-section-title">💌 拆开这份心意贺卡</h2>
                 <div class="card-envelope-outer" id="card-envelope-outer">
                     <div class="card-envelope-container" id="card-envelope-container">
                         <div class="card-envelope-front" id="card-envelope-front">
-                            <span style="font-size:40px;opacity:0.8;">✉️</span>
+                            <span style="font-size:35px;opacity:0.8;">✉️</span>
                         </div>
                         <div class="card-envelope-flap-top" id="card-envelope-flap-top"></div>
                         <div class="card-envelope-seal-round" id="card-envelope-seal-round">❤</div>
                         <div class="card-inside" id="card-inside">
                             <p class="card-inside-greeting">
-                                亲爱的妈妈：<br><br>
-                                感谢您把我带到这个世界<br>
-                                用爱浇灌我成长<br>
-                                您是我生命中最温暖的光<br><br>
-                                愿时光慢些走<br>
-                                愿您永远健康、幸福<br>
+                                岁月无声，爱意绵长。<br>
+                                在我的成长路上，<br>
+                                最温暖、<br>
+                                最坚定的陪伴，<br>
+                                永远来自我的妈妈。<br>
                             </p>
-                            <p class="card-inside-signature">—— 永远爱您的孩子 ❤</p>
+                            <p class="card-inside-signature">—— 永远爱您的儿子 ❤</p>
                         </div>
                     </div>
                 </div>
@@ -1207,10 +1061,9 @@
             let isCardOpened = false;
             let currentPage = 0;
             let isTransitioning = false;
-            const totalPages = 3;
+            const totalPages = 2;
             let hasTypingPlayed = false;
 
-            // ==================== 移动端适配 ====================
             function setMobileViewport() {
                 const vh = window.innerHeight * 0.01;
                 document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -1229,7 +1082,6 @@
                 }, 100);
             });
 
-            // ==================== 滑动逻辑 ====================
             let touchStartX = 0;
             let touchStartY = 0;
 
@@ -1280,138 +1132,125 @@
                 if (e.key === 'ArrowLeft') goToPage(currentPage - 1);
             });
 
-            // ==================== 胶片逻辑 ====================
+            // ==================== 胶片逻辑（3x3网格） ====================
             const filmData = [
-                { trail: 0, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23f5e0d0' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E👶%3C/text%3E%3C/svg%3E",
-                    caption: "那年夏天，您牵着我的手", emoji: "👶" },
-                { trail: 0, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fce4d6' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E📚%3C/text%3E%3C/svg%3E",
-                    caption: "深夜陪读的那盏灯", emoji: "📚" },
-                { trail: 0, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fef0e5' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🎂%3C/text%3E%3C/svg%3E",
-                    caption: "您为我做的生日面", emoji: "🎂" },
-                { trail: 1, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23f7e8da' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🏠%3C/text%3E%3C/svg%3E",
-                    caption: "家的温暖，从未改变", emoji: "🏠" },
-                { trail: 1, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fdf3ea' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🌅%3C/text%3E%3C/svg%3E",
-                    caption: "如今，换我陪您看夕阳", emoji: "🌅" },
-                { trail: 1, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23f9f0e6' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🌸%3C/text%3E%3C/svg%3E",
-                    caption: "您的笑容，是我最大的幸福", emoji: "🌸" },
-                { trail: 2, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23faf3ed' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E🌻%3C/text%3E%3C/svg%3E",
-                    caption: "您教会我坚强与善良", emoji: "🌻" },
-                { trail: 2, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fef5ee' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E💝%3C/text%3E%3C/svg%3E",
-                    caption: "每一次拥抱都那么温暖", emoji: "💝" },
-                { trail: 2, src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='240'%3E%3Crect fill='%23fff8f2' width='320' height='240'/%3E%3Ctext x='160' y='120' text-anchor='middle' font-size='40'%3E💐%3C/text%3E%3C/svg%3E",
-                    caption: "妈妈，永远爱您", emoji: "💐" }
+                { src: "1.jpg",
+                    caption: "", emoji: "" },
+                { src: "2.jpg",
+                    caption: "", emoji: "" },
+                { src: "3.jpg",
+                    caption: "", emoji: "" },
+                { src: "4.jpg",
+                    caption: "", emoji: "" },
+                { src: "5.jpg",
+                    caption: "", emoji: "" },
+                { src: "6.jpg",
+                    caption: "", emoji: "" },
+                { src: "7.jpg",
+                    caption: "", emoji: "" },
+                { src: "8.jpg",
+                    caption: "", emoji: "" },
+                { src: "9.jpg",
+                    caption: "", emoji: "" }
             ];
 
-            const frameW = 150;
-            const frameStep = frameW;
-            const stripW = frameStep * 3;
-            const stripConfigs = [
-                { x: 5, y: 15, angle: 20 },
-                { x: 30, y: 35, angle: -12 },
-                { x: 5, y: 55, angle: 8 },
-            ];
-
-            let allStrips = [];
             let allFrames = [];
             let currentTrail = 0;
             let revealedInTrail = [0, 0, 0];
 
-            function createAllStrips() {
+            function createFilmGrid() {
                 filmStage.innerHTML = '';
-                allStrips = [];
                 allFrames = [];
-                for (let s = 0; s < 3; s++) {
-                    const strip = document.createElement('div');
-                    strip.className = `film-strip strip-${s}`;
-                    strip.dataset.strip = s;
-                    strip.style.cssText = `position:absolute;width:${stripW}px;height:170px;opacity:0;pointer-events:none;overflow:visible;`;
-                    const label = document.createElement('div');
-                    label.className = 'trail-label';
-                    label.textContent = `📽️ 片段 ${s + 1}`;
-                    strip.appendChild(label);
-                    filmStage.appendChild(strip);
-                    const startIdx = s * 3;
-                    for (let f = 0; f < 3; f++) {
-                        const dataIdx = startIdx + f;
-                        const data = filmData[dataIdx];
-                        const frame = document.createElement('div');
-                        frame.className = 'film-frame';
-                        frame.dataset.index = dataIdx;
-                        frame.dataset.trail = s;
-                        frame.dataset.revealed = 'false';
-                        frame.style.left = (f * frameStep) + 'px';
-                        frame.style.top = '0';
-                        frame.style.width = frameW + 'px';
-                        frame.style.height = '100%';
-                        frame.style.opacity = '0';
-                        frame.style.transform = 'scale(0.5)';
-                        const outer = document.createElement('div');
-                        outer.className = 'frame-outer';
-                        const inner = document.createElement('div');
-                        inner.className = 'frame-inner';
-                        const img = document.createElement('img');
-                        img.className = 'frame-img';
-                        img.src = data.src;
-                        img.alt = data.caption;
-                        img.onerror = function() {
-                            this.style.display = 'none';
-                            const ph = document.createElement('div');
-                            ph.className = 'frame-placeholder';
-                            ph.textContent = data.emoji;
-                            inner.insertBefore(ph, inner.firstChild);
-                        };
-                        const caption = document.createElement('div');
-                        caption.className = 'frame-caption';
-                        caption.textContent = data.caption;
-                        inner.appendChild(img);
-                        inner.appendChild(caption);
-                        outer.appendChild(inner);
-                        frame.appendChild(outer);
-                        const dot = document.createElement('span');
-                        dot.className = 'click-dot';
-                        dot.textContent = '👆 点击';
-                        frame.appendChild(dot);
-                        frame.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            handleFrameClick(frame, s);
-                        });
-                        strip.appendChild(frame);
-                        allFrames.push(frame);
-                    }
-                    allStrips.push(strip);
+
+                for (let i = 0; i < 9; i++) {
+                    const data = filmData[i];
+                    const trail = Math.floor(i / 3);
+                    const frame = document.createElement('div');
+                    frame.className = 'film-frame';
+                    frame.dataset.index = i;
+                    frame.dataset.trail = trail;
+                    frame.dataset.revealed = 'false';
+                    frame.style.opacity = '0';
+                    frame.style.transform = 'scale(0.5)';
+
+                    const outer = document.createElement('div');
+                    outer.className = 'frame-outer';
+                    const inner = document.createElement('div');
+                    inner.className = 'frame-inner';
+
+                    const img = document.createElement('img');
+                    img.className = 'frame-img';
+                    img.src = data.src;
+                    img.alt = data.caption;
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        const ph = document.createElement('div');
+                        ph.className = 'frame-placeholder';
+                        ph.textContent = data.emoji;
+                        inner.insertBefore(ph, inner.firstChild);
+                    };
+
+                    const caption = document.createElement('div');
+                    caption.className = 'frame-caption';
+                    caption.textContent = data.caption;
+
+                    inner.appendChild(img);
+                    inner.appendChild(caption);
+                    outer.appendChild(inner);
+                    frame.appendChild(outer);
+
+                    const dot = document.createElement('span');
+                    dot.className = 'click-dot';
+                    dot.textContent = '👆 点击';
+                    frame.appendChild(dot);
+
+                    frame.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        handleFrameClick(frame, trail);
+                    });
+
+                    filmStage.appendChild(frame);
+                    allFrames.push(frame);
                 }
             }
 
-            function showStrip(trailIndex) {
-                const config = stripConfigs[trailIndex];
-                const strip = allStrips[trailIndex];
-                strip.style.left = config.x + '%';
-                strip.style.top = config.y + '%';
-                strip.style.transform = `rotate(${config.angle}deg)`;
-                strip.style.transformOrigin = 'top left';
-                strip.style.opacity = '1';
-                strip.style.pointerEvents = 'auto';
-                strip.classList.add('active');
-                strip.classList.add('scrolling-teeth');
-                setTimeout(() => strip.classList.remove('scrolling-teeth'), 2000);
-                const frames = strip.querySelectorAll('.film-frame');
-                frames.forEach((frame, i) => {
-                    if (frame.dataset.revealed === 'true') return;
+            function showRow(trailIndex) {
+                const startIdx = trailIndex * 3;
+                const endIdx = startIdx + 3;
+
+                for (let i = startIdx; i < endIdx; i++) {
+                    const frame = allFrames[i];
+                    if (frame.dataset.revealed === 'true') continue;
+
                     setTimeout(() => {
                         frame.classList.add('present');
                         frame.style.opacity = '1';
                         frame.style.transform = 'scale(1)';
-                    }, i * 250);
-                });
-                filmHint.textContent = `✨ 第${trailIndex + 1}段回忆展开中…点击闪烁的胶片 ✨`;
+
+                        const outer = frame.querySelector('.frame-outer');
+                        if (outer) {
+                            outer.classList.add('scrolling-teeth');
+                            setTimeout(() => outer.classList.remove('scrolling-teeth'), 1800);
+                        }
+                    }, (i - startIdx) * 300);
+                }
+
+                filmHint.textContent = `✨ 第${trailIndex + 1}行回忆展开中…点击闪烁的胶片 ✨`;
             }
 
             function handleFrameClick(frame, trailIndex) {
-                if (trailIndex !== currentTrail) { shakeFrame(frame); return; }
+                if (trailIndex !== currentTrail) {
+                    shakeFrame(frame);
+                    return;
+                }
                 if (frame.dataset.revealed === 'true') return;
+
                 revealFrame(frame);
                 revealedInTrail[trailIndex]++;
-                if (revealedInTrail[trailIndex] >= 3) setTimeout(() => advanceToNextTrail(), 1000);
+
+                if (revealedInTrail[trailIndex] >= 3) {
+                    setTimeout(() => advanceToNextRow(), 1000);
+                }
             }
 
             function revealFrame(frame) {
@@ -1419,6 +1258,8 @@
                 frame.classList.add('revealed');
                 frame.classList.remove('present');
                 frame.style.transform = 'scale(1)';
+                const outer = frame.querySelector('.frame-outer');
+                if (outer) outer.classList.remove('scrolling-teeth');
                 spawnPetals(3);
             }
 
@@ -1431,32 +1272,38 @@
                     frame.style.transition = ''; }, 200);
             }
 
-            function advanceToNextTrail() {
-                if (currentTrail < 2) { currentTrail++;
-                    showStrip(currentTrail); } else {
+            function advanceToNextRow() {
+                if (currentTrail < 2) {
+                    currentTrail++;
+                    showRow(currentTrail);
+                } else {
                     filmHint.textContent = '💝 所有回忆都已珍藏';
                     replayBtn.classList.add('show');
                     spawnPetals(18);
                 }
             }
 
-            function startFirstTrail() {
+            function startFirstRow() {
                 currentTrail = 0;
                 revealedInTrail = [0, 0, 0];
                 replayBtn.classList.remove('show');
+
                 allFrames.forEach(frame => {
                     frame.dataset.revealed = 'false';
                     frame.classList.remove('revealed', 'present');
                     frame.style.opacity = '0';
                     frame.style.transform = 'scale(0.5)';
+                    const outer = frame.querySelector('.frame-outer');
+                    if (outer) outer.classList.remove('scrolling-teeth');
                 });
-                allStrips.forEach(strip => { strip.style.opacity = '0';
-                    strip.style.pointerEvents = 'none';
-                    strip.classList.remove('active', 'scrolling-teeth'); });
-                setTimeout(() => showStrip(0), 400);
+
+                setTimeout(() => showRow(0), 400);
             }
-            replayBtn.addEventListener('click', () => { startFirstTrail();
-                spawnPetals(8); });
+
+            replayBtn.addEventListener('click', () => {
+                startFirstRow();
+                spawnPetals(8);
+            });
 
             // ==================== 开场 ====================
             function createSparkles() {
@@ -1484,12 +1331,16 @@
                 envelopeWrapper.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
                 envelopeWrapper.style.transform = 'scale(1.1)';
                 setTimeout(() => { envelopeWrapper.style.transform = 'scale(1)'; }, 300);
-                setTimeout(() => { introOverlay.classList.add('hidden');
-                    setTimeout(() => startFirstTrail(), 800); }, 900);
+                setTimeout(() => {
+                    introOverlay.classList.add('hidden');
+                    setTimeout(() => startFirstRow(), 800);
+                }, 900);
             }
             introOverlay.addEventListener('click', handleIntroClick);
-            introOverlay.addEventListener('touchend', e => { if (!introDone) { e.preventDefault();
-                    handleIntroClick(); } });
+            introOverlay.addEventListener('touchend', e => {
+                if (!introDone) { e.preventDefault();
+                    handleIntroClick(); }
+            });
 
             function spawnPetals(count) {
                 const emojis = ['🌸', '💮', '🌷', '🌺', '💐', '🌼', '🌻', '🪷', '✿', '❀'];
@@ -1505,28 +1356,34 @@
                     p.style.animationDelay = Math.random() * 0.6 + 's';
                     p.style.fontSize = (16 + Math.random() * 28) + 'px';
                     document.body.appendChild(p);
-                    setTimeout(() => { if (p.parentNode) p.remove(); }, parseFloat(p.style.animationDuration) * 1000 +
-                        800);
+                    setTimeout(() => { if (p.parentNode) p.remove(); }, parseFloat(p.style.animationDuration) *
+                        1000 + 800);
                 }
             }
 
             function playMusic() {
                 if (!isMusicPlaying) {
                     bgMusic.volume = 0.45;
-                    bgMusic.play().then(() => { isMusicPlaying = true;
+                    bgMusic.play().then(() => {
+                        isMusicPlaying = true;
                         musicBtn.textContent = '🎵';
-                        musicBtn.classList.add('playing'); }).catch(() => { musicBtn.textContent = '🔇'; });
+                        musicBtn.classList.add('playing');
+                    }).catch(() => { musicBtn.textContent = '🔇'; });
                 }
             }
             musicBtn.addEventListener('click', e => {
                 e.stopPropagation();
-                if (isMusicPlaying) { bgMusic.pause();
+                if (isMusicPlaying) {
+                    bgMusic.pause();
                     isMusicPlaying = false;
                     musicBtn.textContent = '🔇';
-                    musicBtn.classList.remove('playing'); } else {
-                    bgMusic.play().then(() => { isMusicPlaying = true;
+                    musicBtn.classList.remove('playing');
+                } else {
+                    bgMusic.play().then(() => {
+                        isMusicPlaying = true;
                         musicBtn.textContent = '🎵';
-                        musicBtn.classList.add('playing'); }).catch(() => {});
+                        musicBtn.classList.add('playing');
+                    }).catch(() => {});
                 }
             });
 
@@ -1538,11 +1395,15 @@
                 cardEnvelopeSeal.classList.add('hidden-seal');
                 setTimeout(() => cardEnvelopeFlapTop.classList.add('open'), 150);
                 setTimeout(() => cardEnvelopeFront.classList.add('fading'), 400);
-                setTimeout(() => { cardInside.classList.add('emerging');
-                    cardEnvelopeContainer.classList.add('lifted'); }, 550);
+                setTimeout(() => {
+                    cardInside.classList.add('emerging');
+                    cardEnvelopeContainer.classList.add('lifted');
+                }, 550);
                 setTimeout(() => spawnPetals(12), 700);
-                setTimeout(() => { cardHint.textContent = '💝 愿这份心意永远温暖您';
-                    cardHint.style.opacity = '0.9'; }, 900);
+                setTimeout(() => {
+                    cardHint.textContent = '💝 愿这份心意永远温暖您';
+                    cardHint.style.opacity = '0.9';
+                }, 900);
                 setTimeout(() => { openDocModal(); }, 2000);
             }
             cardEnvelopeOuter.addEventListener('click', openCard);
@@ -1553,10 +1414,11 @@
                 modalOverlay.classList.add('active');
             });
             modalClose.addEventListener('click', () => modalOverlay.classList.remove('active'));
-            modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) modalOverlay.classList.remove(
-                    'active'); });
+            modalOverlay.addEventListener('click', e => {
+                if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+            });
 
-            // ==================== 文档悬浮窗（内置文字） ====================
+            // ==================== 文档悬浮窗 ====================
             let docChars = [];
             let docCharIndex = 0;
             let docTypingTimer = null;
@@ -1644,13 +1506,15 @@
             });
 
             // ==================== 初始化 ====================
-            createAllStrips();
+            createFilmGrid();
             loadDocText();
             setTimeout(() => {
                 if (!introDone) {
                     envelopeWrapper.style.animation = 'envelopeFloat 1.5s ease-in-out 3';
-                    setTimeout(() => { if (!introDone) envelopeWrapper.style.animation =
-                            'envelopeFloat 3s ease-in-out infinite'; }, 4500);
+                    setTimeout(() => {
+                        if (!introDone) envelopeWrapper.style.animation =
+                            'envelopeFloat 3s ease-in-out infinite';
+                    }, 4500);
                 }
             }, 8000);
             console.log('🌸 妈妈，母亲节快乐！');
